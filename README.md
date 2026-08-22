@@ -25,6 +25,19 @@
 
 <br/>
 
+## 与主分支的区别
+
+本分支 `linux-arm64-support` 在保持上游（[bggRGjQaUbCoE/PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus)）功能同步的基础上，额外提供：
+
+- **Linux ARM64 支持**：新增 GitHub Actions 云编译工作流（`.github/workflows/linux_arm64.yml`），
+  使用 Flutter-SDK-ARM64 社区 SDK（Flutter 3.48.0-0.2.pre，2026-07-02）自动构建 Linux ARM64 版本。
+- **中文字体显示修复**：修复 Linux 下中文/Emoji 字体显示为方块（口口口）的问题，
+  内置 Noto Sans CJK SC / Noto Sans / Noto Sans Math 字体并配置字体回退。
+- **预编译产物**：在 GitHub Release 中提供 `PiliPlus_linux_<version>_arm64.deb` 与 `.tar.gz`，
+  可直接在 ARM64 Linux（如 Ubuntu 24.04）上安装使用。
+
+> 其余功能与上游主分支保持一致，并定期同步上游最新代码。
+
 ## 适配平台
 
 - [x] Android
