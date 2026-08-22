@@ -287,3 +287,6 @@ flutter:
     - family: Noto Sans
       fonts:
         - asset: assets/fonts/NotoSans-Regular.ttf
+    - family: Noto Sans Math
+      fonts:
+        - asset: assets/fonts/NotoSansMath-Regular.ttf
