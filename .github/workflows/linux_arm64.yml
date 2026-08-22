@@ -98,6 +98,7 @@ jobs:
           touch /tmp/github_env
           cd /workspace
           git config --global --add safe.directory /workspace
+          export PATH="/root/flutter/bin:$PATH"
           echo "=== Architecture ==="
           uname -m
           echo "=== Running build.ps1 ==="
