@@ -29,7 +29,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/piliplus-arm64-image.tar
-          key: docker-arm64-v2
+          key: docker-arm64-v3
 
       - name: Build Docker image
         if: steps.docker-cache.outputs.cache-hit != 'true'
@@ -63,7 +63,7 @@ jobs:
               chmod +x /usr/local/powershell/pwsh && \
               ln -s /usr/local/powershell/pwsh /usr/bin/pwsh
 
-          RUN wget -q https://github.com/zhzhzhy/Flutter-SDK-ARM64/releases/download/Flutter-SDK-2026-07-03/Flutter-SDK-ARM64.zip && \
+          RUN wget -q https://github.com/zhzhzhy/Flutter-SDK-ARM64/releases/download/Flutter-SDK-2026-07-02/Flutter-SDK-ARM64.zip && \
               unzip -q Flutter-SDK-ARM64.zip -d /root && \
               rm Flutter-SDK-ARM64.zip
 
