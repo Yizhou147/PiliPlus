@@ -7,6 +7,7 @@ import 'package:PiliPlus/models/model_avatar.dart';
 import 'package:PiliPlus/models/model_owner.dart';
 import 'package:PiliPlus/models_new/live/live_feed_index/watched_show.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
+import 'package:PiliPlus/utils/parse_bool.dart';
 import 'package:PiliPlus/utils/parse_int.dart';
 import 'package:PiliPlus/utils/parse_string.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
@@ -421,15 +422,16 @@ class ModuleAuthorModel extends Avatar {
       officialVerify ??= BaseOfficialVerify.fromJson(json['official']); // opus
     }
     pubAction = json['pub_action'];
-    pubTime = json['pub_time'];
+    pubTime = nonNullOrEmptyString(json['pub_time']);
     if (safeToInt(json['pub_ts']) case final pubTs? when pubTs > 0) {
       this.pubTs = pubTs;
     }
     type = json['type'];
     if (PendantAvatar.showDecorate) {
-      decorate = json['decorate'] == null
-          ? null
-          : Decorate.fromJson(json['decorate']);
+      final decorate = json['decorate'] ?? json['decoration_card'];
+      if (decorate != null) {
+        this.decorate = Decorate.fromJson(decorate);
+      }
     } else {
       pendant = null;
     }
@@ -464,7 +466,7 @@ class Fan {
 
   factory Fan.fromJson(Map<String, dynamic> json) => Fan(
     color: json["color"],
-    numStr: json["num_str"],
+    numStr: json["num_str"] ?? json['num_desc'],
   );
 }
 
@@ -527,7 +529,10 @@ class DynamicAddModel {
     upowerLottery = json['upower_lottery'] != null
         ? UpowerLottery.fromJson(json['upower_lottery'])
         : null;
-    common = json['common'] != null ? AddCommon.fromJson(json['common']) : null;
+    final common = json['common'];
+    if (common != null && common['sub_type'] != 'game') {
+      this.common = AddCommon.fromJson(common);
+    }
     match = json['match'] != null ? AddMatch.fromJson(json['match']) : null;
   }
 }
@@ -1345,7 +1350,7 @@ class DynamicStat {
     if (safeToInt(json['count']) case final count? when count > 0) {
       this.count = count;
     }
-    status = json['status'];
+    status = safeToBool(json['status'], () => 'STATE_LIKE');
   }
 }
 

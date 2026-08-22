@@ -1,7 +1,7 @@
 import 'package:PiliPlus/common/widgets/sliver/sliver_pinned_dynamic_header.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:flutter/foundation.dart' show clampDouble;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class VideoHeader extends SliverPinnedDynamicHeader {
   const VideoHeader({
@@ -25,6 +25,15 @@ class VideoHeader extends SliverPinnedDynamicHeader {
       onScrollRatioChanged: onScrollRatioChanged,
     );
   }
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    RenderVideoHeader renderObject,
+  ) {
+    super.updateRenderObject(context, renderObject);
+    renderObject.minVideoHeight = minVideoHeight;
+  }
 }
 
 class RenderVideoHeader extends RenderSliverPinnedDynamicHeader {
@@ -36,7 +45,7 @@ class RenderVideoHeader extends RenderSliverPinnedDynamicHeader {
   });
 
   double? _scrollRatio;
-  final double minVideoHeight;
+  double minVideoHeight;
   final ValueChanged<double> onScrollRatioChanged;
 
   @override
