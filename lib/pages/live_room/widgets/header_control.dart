@@ -79,7 +79,12 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
         spacing: 30,
         velocity: 30,
         strutStyle: const StrutStyle(fontSize: 15, leading: 0),
-        style: const TextStyle(fontSize: 15, height: 1, color: Colors.white),
+        style: const TextStyle(
+          fontSize: 15,
+          height: 1,
+          color: Colors.white,
+          fontFamily: 'Noto Sans CJK SC',
+        ),
       ),
     );
     if (isFullScreen) {
@@ -98,6 +103,7 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.white,
+                    fontFamily: 'Noto Sans CJK SC',
                   ),
                 ),
               liveController.watchedWidget,

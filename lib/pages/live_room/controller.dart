@@ -95,6 +95,7 @@ class LiveRoomController extends GetxController {
       style: const TextStyle(
         fontSize: 12,
         color: Colors.white,
+        fontFamily: 'Noto Sans CJK SC',
       ),
     );
   });
@@ -143,6 +144,7 @@ class LiveRoomController extends GetxController {
         style: const TextStyle(
           fontSize: 12,
           color: Colors.white,
+          fontFamily: 'Noto Sans CJK SC',
         ),
       );
     }

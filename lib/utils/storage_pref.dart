@@ -270,14 +270,33 @@ abstract final class Pref {
     if (codecs is List) {
       return codecs.map((i) => VideoDecodeFormatType.values.byName(i)).toList();
     }
+    if (Platform.isLinux) {
+      // 桌面版配合 VA-API 驱动：只有 AVC / HEVC(Main8) 能硬解，
+      // AV1 与杜比(10bit) 走软解，没必要优先索取。
+      return const <VideoDecodeFormatType>[.AVC, .HEVC];
+    }
     return const <VideoDecodeFormatType>[.AVC, .AV1];
   }
+
+  /// DroidSpaces（高通 msm_vidc）VA-API 驱动安装后的特征文件。
+  /// 检测到才把 Linux 默认硬解方式改为 vaapi-copy，否则维持 auto 交给 mpv 决定。
+  static const List<String> _msmVaDriverPaths = [
+    '/usr/lib/aarch64-linux-gnu/dri/msm_drm_drv_video.so',
+    '/usr/lib/x86_64-linux-gnu/dri/msm_drm_drv_video.so',
+    '/usr/lib/dri/msm_drm_drv_video.so',
+  ];
+
+  static bool get _hasMsmVaDriver => _msmVaDriverPaths.any(
+    (path) => File(path).existsSync(),
+  );
 
   static String get hardwareDecoding => _setting.get(
     SettingBoxKey.hardwareDecoding,
     defaultValue: Platform.isAndroid
         ? HwDecType.androidDefault
-        : HwDecType.auto.hwdec,
+        : Platform.isLinux && _hasMsmVaDriver
+            ? '${HwDecType.vaapiCopy.hwdec},${HwDecType.auto.hwdec}'
+            : HwDecType.auto.hwdec,
   );
 
   static String get videoSync =>

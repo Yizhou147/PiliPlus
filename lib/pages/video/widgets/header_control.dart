@@ -788,7 +788,10 @@ class HeaderControlState extends State<HeaderControl>
     BuildContext context, {
     required NativePlayer player,
   }) {
-    final hwdec = player.getProperty('hwdec-current');
+    // hwdec-current 为空即当前实际在软解；非空则是实际生效的硬解方式（如 vaapi-copy）
+    final rawHwdec = player.getProperty('hwdec-current').toString().trim();
+    final isHardwareDecoding = rawHwdec.isNotEmpty && rawHwdec != 'no';
+    final decodeDesc = isHardwareDecoding ? '硬解（$rawHwdec）' : '软解';
     final volume = player.getProperty('volume');
     showDialog(
       context: context,
@@ -805,6 +808,25 @@ class HeaderControlState extends State<HeaderControl>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    ListTile(
+                      dense: true,
+                      title: const Text('解码方式'),
+                      subtitle: Text(
+                        decodeDesc,
+                        style: TextStyle(
+                          color: isHardwareDecoding
+                              ? Colors.green
+                              : colorScheme.outline,
+                        ),
+                      ),
+                      leading: Icon(
+                        isHardwareDecoding ? Icons.bolt : Icons.computer,
+                        color: isHardwareDecoding
+                            ? Colors.green
+                            : colorScheme.outline,
+                      ),
+                      onTap: () => Utils.copyText('解码方式\n$decodeDesc'),
+                    ),
                     ListTile(
                       dense: true,
                       title: const Text("Resolution"),
@@ -858,12 +880,6 @@ class HeaderControlState extends State<HeaderControl>
                       title: const Text("Volume"),
                       subtitle: Text(volume),
                       onTap: () => Utils.copyText('Volume\n$volume'),
-                    ),
-                    ListTile(
-                      dense: true,
-                      title: const Text('hwdec'),
-                      subtitle: Text(hwdec),
-                      onTap: () => Utils.copyText('hwdec\n$hwdec'),
                     ),
                   ],
                 ),
