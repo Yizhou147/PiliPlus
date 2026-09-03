@@ -514,6 +514,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
           style: const TextStyle(
             fontSize: 12,
             color: Colors.white,
+            fontFamily: 'Noto Sans CJK SC',
           ),
         );
       }
@@ -548,7 +549,10 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       toolbarHeight: isFullScreen ? 0 : null,
       backgroundColor: Colors.transparent,
       foregroundColor: Colors.white,
-      titleTextStyle: const TextStyle(color: Colors.white),
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontFamily: 'Noto Sans CJK SC',
+      ),
       title: isFullScreen || plPlayerController.isDesktopPip
           ? null
           : Obx(
