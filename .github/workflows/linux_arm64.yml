@@ -1,6 +1,13 @@
 name: Build for Linux arm64
 
 on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "tag"
+        required: false
+        default: ""
+        type: string
   push:
     branches:
       - main
