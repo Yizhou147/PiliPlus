@@ -1,5 +1,6 @@
 import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
+import 'package:PiliPlus/utils/font_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:cupertino_ui/cupertino_ui.dart' show CupertinoThemeData;
 import 'package:flutter/foundation.dart' show PlatformDispatcher;
@@ -31,41 +32,39 @@ abstract final class ThemeUtils {
     required bool isDynamic,
     bool isDark = false,
   }) {
-    final appFontWeight = Pref.appFontWeight.clamp(
-      -1,
-      FontWeight.values.length - 1,
-    );
-    final fontWeight = appFontWeight == -1
-        ? null
-        : FontWeight.values[appFontWeight];
-    late final textStyle = TextStyle(fontWeight: fontWeight);
-    ThemeData theme = ThemeData(
+    final fontWeight = Pref.appFontWeight;
+    // 本分支特色：未设置自定义字体时兜底到内置的 CJK 字体，
+    // 避免 ARM64 Linux 等无系统中文字体的环境下中文显示为口口口
+    final fontFamily = FontUtils.fontFamily ?? 'Noto Sans CJK SC';
+
+    TextTheme? textTheme;
+    if (fontWeight != .normal) {
+      final textStyle = TextStyle(fontWeight: fontWeight);
+      textTheme = TextTheme(
+        displayLarge: textStyle,
+        displayMedium: textStyle,
+        displaySmall: textStyle,
+        headlineLarge: textStyle,
+        headlineMedium: textStyle,
+        headlineSmall: textStyle,
+        titleLarge: textStyle,
+        titleMedium: textStyle,
+        titleSmall: textStyle,
+        bodyLarge: textStyle,
+        bodyMedium: textStyle,
+        bodySmall: textStyle,
+        labelLarge: textStyle,
+        labelMedium: textStyle,
+        labelSmall: textStyle,
+      );
+    }
+
+    final theme = ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      fontFamily: 'Noto Sans CJK SC',
+      fontFamily: fontFamily,
       fontFamilyFallback: ['Noto Sans Math', 'Noto Sans', 'Noto Color Emoji'],
-      textTheme: fontWeight == null
-          ? null
-          : TextTheme(
-              displayLarge: textStyle,
-              displayMedium: textStyle,
-              displaySmall: textStyle,
-              headlineLarge: textStyle,
-              headlineMedium: textStyle,
-              headlineSmall: textStyle,
-              titleLarge: textStyle,
-              titleMedium: textStyle,
-              titleSmall: textStyle,
-              bodyLarge: textStyle,
-              bodyMedium: textStyle,
-              bodySmall: textStyle,
-              labelLarge: textStyle,
-              labelMedium: textStyle,
-              labelSmall: textStyle,
-            ),
-      tabBarTheme: fontWeight == null
-          ? null
-          : TabBarThemeData(labelStyle: textStyle),
+      textTheme: textTheme,
       appBarTheme: AppBarTheme(
         elevation: 0,
         titleSpacing: 0,
@@ -74,9 +73,9 @@ abstract final class ThemeUtils {
         backgroundColor: colorScheme.surface,
         titleTextStyle: TextStyle(
           fontSize: 16,
-          color: colorScheme.onSurface,
           fontWeight: fontWeight,
-          fontFamily: 'Noto Sans CJK SC',
+          fontFamily: fontFamily,
+          color: colorScheme.onSurface,
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -88,8 +87,9 @@ abstract final class ThemeUtils {
         closeIconColor: colorScheme.secondary,
         backgroundColor: colorScheme.secondaryContainer,
         contentTextStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: fontWeight,
           color: colorScheme.onSecondaryContainer,
-          fontFamily: 'Noto Sans CJK SC',
         ),
       ),
       popupMenuTheme: PopupMenuThemeData(
@@ -113,8 +113,8 @@ abstract final class ThemeUtils {
         titleTextStyle: TextStyle(
           fontSize: 18,
           fontWeight: fontWeight,
+          fontFamily: fontFamily,
           color: colorScheme.onSurface,
-          fontFamily: 'Noto Sans CJK SC',
         ),
         backgroundColor: colorScheme.surface,
         constraints: const BoxConstraints(minWidth: 280, maxWidth: 420),
@@ -128,14 +128,15 @@ abstract final class ThemeUtils {
       // ignore: deprecated_member_use
       sliderTheme: const SliderThemeData(year2023: false),
       tooltipTheme: TooltipThemeData(
-        textStyle: const TextStyle(
-          color: Colors.white,
+        textStyle: TextStyle(
           fontSize: 14,
-          fontFamily: 'Noto Sans CJK SC',
+          color: Colors.white,
+          fontFamily: fontFamily,
+          fontWeight: fontWeight,
         ),
-        decoration: BoxDecoration(
-          color: Colors.grey[700]!.withValues(alpha: 0.9),
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
+        decoration: const BoxDecoration(
+          color: Color(0xE6616161), // Colors.grey[700]!.withValues(alpha: 0.9)
+          borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
       ),
       cupertinoOverrideTheme: CupertinoThemeData(

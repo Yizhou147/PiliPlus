@@ -41,26 +41,26 @@ class MpvConvertWebp {
   Future<void> _init() async {
     final enableHA = Pref.enableHA;
     _ctx = await Initializer.create(
-      _mpv,
       _onEvent,
       options: {
+        'idle': 'once',
         'o': outFile,
         'start': start.toStringAsFixed(3),
         'end': (start + duration).toStringAsFixed(3),
         'of': 'webp',
         'ovc': 'libwebp_anim',
         'ofopts': 'loop=0',
-        'ovcopts': 'preset=${preset.flag}',
-        if (enableHA) 'vo': 'gpu',
+        'ovcopts': 'preset=${preset.flag},compression_level=6',
+        'vf': 'fps=12',
         if (enableHA) 'hwdec': '${Pref.hardwareDecoding},auto-copy', // transcode only support copy
       },
     );
-    NativePlayer.setHeader(
-      _mpv,
+    _mpv.mpv_request_event(
       _ctx,
-      userAgent: BrowserUa.pc,
-      referer: HttpString.baseUrl,
+      generated.mpv_event_id.MPV_EVENT_VIDEO_RECONFIG,
+      0,
     );
+    _mpv.setHeader(_ctx, userAgent: BrowserUa.pc, referer: HttpString.baseUrl);
     if (progress != null) {
       _observeProperty('time-pos');
     }
@@ -71,7 +71,7 @@ class MpvConvertWebp {
 
   void dispose() {
     Initializer.dispose(_ctx);
-    _mpv.mpv_terminate_destroy(_ctx);
+    Timer(const Duration(seconds: 5), () => _mpv.mpv_terminate_destroy(_ctx));
     if (!_completer.isCompleted) _completer.complete(false);
   }
 
@@ -105,8 +105,7 @@ class MpvConvertWebp {
           _success = false;
         }
         break;
-      case generated.mpv_event_id.MPV_EVENT_END_FILE ||
-          generated.mpv_event_id.MPV_EVENT_SHUTDOWN:
+      case generated.mpv_event_id.MPV_EVENT_SHUTDOWN:
         progress?.value = 1;
         _completer.complete(_success);
         dispose();
