@@ -233,8 +233,8 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "275046d8647a6a26cba1d0dadb9e28688cb3dbf1"
-      url: "https://github.com/bggRGjQaUbCoE/canvas_danmaku.git"
+      resolved-ref: fcd87abdadb531a69c218c6f71ab391eab3cd697
+      url: "https://github.com/Yizhou147/canvas_danmaku.git"
     source: git
     version: "0.2.6"
   catcher_2:
@@ -611,10 +611,11 @@ packages:
   flex_seed_scheme:
     dependency: "direct main"
     description:
-      name: flex_seed_scheme
-      sha256: "08f9ee11f9a08c2dee76d0a07ea824c8a09ea4db9456e32ac4f6dfb34d28392c"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "v5.0.1-arm64"
+      resolved-ref: c3ff0f9db90f1b8b3e7faf3c1ce2fe89dd8e2744
+      url: "https://github.com/Yizhou147/flex_seed_scheme.git"
+    source: git
     version: "5.0.1"
   flutter:
     dependency: "direct main"
@@ -2029,5 +2030,5 @@ packages:
     source: hosted
     version: "3.1.4"
 sdks:
-  dart: ">=3.13.0 <4.0.0"
-  flutter: "3.47.4"
+  dart: ">=3.13.0-0 <4.0.0"
+  flutter: ">=3.47.0"

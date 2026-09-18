@@ -20,7 +20,9 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 2.1.4+1
 
 environment:
-  sdk: ">=3.13.0"
+  # -0 允许 Dart 3.13 预发布版（社区 ARM64 SDK 的 Dart 为 3.13.0-266.0.dev），
+  # 又比上游宽松的 >=3.12.0 更准确表达"需要 Dart 3.13"
+  sdk: ">=3.13.0-0"
   # 本分支用范围约束：云/本地 ARM64 构建使用社区 SDK 3.48.0-0.2.pre，
   # 不能改回上游的精确版（3.47.4），否则 ARM64 SDK 不满足约束
   flutter: ">=3.44.4"
@@ -86,7 +88,12 @@ dependencies:
   file_picker: ^13.1.0
   fixnum: ^1.1.1
   fl_chart: ^1.0.0
-  flex_seed_scheme: ^5.0.0
+  # 本分支用 fork：v5 的 sdk 元数据要求 Dart >=3.13.0 正式版，社区 ARM64 SDK
+  # 的 Dart 为 3.13.0-266.0.dev（预发布）会被拒绝；fork 仅放宽该约束，代码同 5.0.1
+  flex_seed_scheme:
+    git:
+      url: https://github.com/Yizhou147/flex_seed_scheme.git
+      ref: v5.0.1-arm64
   flutter_displaymode: ^0.7.0
   flutter_html:
     git:
