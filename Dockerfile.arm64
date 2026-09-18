@@ -5,7 +5,7 @@ ENV PATH="/root/flutter/bin:/root/flutter/bin/cache/dart-sdk/bin:$PATH"
 
 RUN apt-get update && apt-get install -y \
     clang cmake libgtk-3-dev ninja-build libayatana-appindicator3-dev unzip \
-    libasound2-dev rpm patchelf libmpv-dev webkit2gtk-4.1 \
+    libasound2-dev rpm patchelf libmpv-dev webkit2gtk-4.1 libwebkit2gtk-4.1-dev \
     gcc g++ autoconf automake debhelper glslang-dev ladspa-sdk xutils-dev \
     libarchive-dev libbluray-dev libbs2b-dev libcaca-dev libcdio-paranoia-dev libdrm-dev \
     libdav1d-dev libdvdnav-dev libegl1-mesa-dev libepoxy-dev libfontconfig-dev libfreetype6-dev \
