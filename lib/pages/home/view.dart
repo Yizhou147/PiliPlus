@@ -106,6 +106,8 @@ class _HomePageState extends CommonPageState<HomePage>
             child: FloatingActionButton(
               heroTag: null,
               tooltip: '刷新',
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xDD000000),
               onPressed: () {
                 feedBack();
                 _homeController.onRefresh();
