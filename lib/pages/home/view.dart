@@ -75,20 +75,45 @@ class _HomePageState extends CommonPageState<HomePage>
     } else {
       tabBar = const SizedBox(height: 6);
     }
-    return Column(
+    return Stack(
       children: [
-        if (!_mainController.useSideBar &&
-            MediaQuery.sizeOf(context).isPortrait)
-          customAppBar(),
-        tabBar,
-        Expanded(
-          child: onBuild(
-            tabBarView(
-              controller: _homeController.tabController,
-              children: _homeController.tabs.map((e) => e.page).toList(),
+        Column(
+          children: [
+            if (!_mainController.useSideBar &&
+                MediaQuery.sizeOf(context).isPortrait)
+              customAppBar(),
+            tabBar,
+            Expanded(
+              child: onBuild(
+                tabBarView(
+                  controller: _homeController.tabController,
+                  children: _homeController.tabs.map((e) => e.page).toList(),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
+        Obx(() {
+          if (!_mainController.showHomeRefreshFab.value) {
+            return const SizedBox.shrink();
+          }
+          return Positioned(
+            right: kFloatingActionButtonMargin,
+            // 底部导航悬浮绘制在内容之上，FAB 需垫高避让
+            bottom:
+                MediaQuery.viewPaddingOf(context).bottom +
+                (_mainController.useBottomNav ? 88.0 : kFloatingActionButtonMargin),
+            child: FloatingActionButton(
+              heroTag: null,
+              tooltip: '刷新',
+              onPressed: () {
+                feedBack();
+                _homeController.onRefresh();
+              },
+              child: const Icon(Icons.refresh_rounded),
+            ),
+          );
+        }),
       ],
     );
   }

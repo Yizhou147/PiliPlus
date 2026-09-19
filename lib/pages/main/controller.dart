@@ -69,6 +69,9 @@ class MainController extends GetxController
   late bool pauseOnMinimize = Pref.pauseOnMinimize;
   late bool isPlaying = false;
 
+  /// 首页右下角刷新按钮（设置即时生效）
+  final showHomeRefreshFab = Pref.homeRefreshFab.obs;
+
   static const _period = 5 * 60 * 1000;
   late int _lastSelectTime = 0;
 

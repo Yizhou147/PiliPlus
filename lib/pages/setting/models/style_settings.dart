@@ -124,6 +124,18 @@ List<SettingsModel> get styleSettings => [
     defaultVal: false,
     needReboot: true,
   ),
+  SwitchModel(
+    title: '首页刷新按钮',
+    subtitle: '在首页右下角显示刷新按钮',
+    leading: Icon(Icons.refresh_rounded),
+    setKey: SettingBoxKey.homeRefreshFab,
+    defaultVal: PlatformUtils.isDesktop,
+    onChanged: (value) {
+      try {
+        Get.find<MainController>().showHomeRefreshFab.value = value;
+      } catch (_) {}
+    },
+  ),
   NormalModel(
     leading: const Icon(Icons.calendar_view_week_outlined),
     title: '列表宽度（dp）限制',

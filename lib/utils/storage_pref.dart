@@ -1012,6 +1012,12 @@ abstract final class Pref {
   static bool get showTrayIcon =>
       _setting.get(SettingBoxKey.showTrayIcon, defaultValue: true);
 
+  /// 首页右下角刷新按钮：桌面端默认开启，移动端默认关闭
+  static bool get homeRefreshFab => _setting.get(
+    SettingBoxKey.homeRefreshFab,
+    defaultValue: PlatformUtils.isDesktop,
+  );
+
   static bool get setSystemBrightness =>
       _setting.get(SettingBoxKey.setSystemBrightness, defaultValue: false);
 
