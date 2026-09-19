@@ -75,20 +75,47 @@ class _HomePageState extends CommonPageState<HomePage>
     } else {
       tabBar = const SizedBox(height: 6);
     }
-    return Column(
+    return Stack(
       children: [
-        if (!_mainController.useSideBar &&
-            MediaQuery.sizeOf(context).isPortrait)
-          customAppBar(),
-        tabBar,
-        Expanded(
-          child: onBuild(
-            tabBarView(
-              controller: _homeController.tabController,
-              children: _homeController.tabs.map((e) => e.page).toList(),
+        Column(
+          children: [
+            if (!_mainController.useSideBar &&
+                MediaQuery.sizeOf(context).isPortrait)
+              customAppBar(),
+            tabBar,
+            Expanded(
+              child: onBuild(
+                tabBarView(
+                  controller: _homeController.tabController,
+                  children: _homeController.tabs.map((e) => e.page).toList(),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
+        Obx(() {
+          if (!_mainController.showHomeRefreshFab.value) {
+            return const SizedBox.shrink();
+          }
+          return Positioned(
+            right: kFloatingActionButtonMargin,
+            // 底部导航悬浮绘制在内容之上，FAB 需垫高避让
+            bottom:
+                MediaQuery.viewPaddingOf(context).bottom +
+                (_mainController.useBottomNav ? 88.0 : kFloatingActionButtonMargin),
+            child: FloatingActionButton(
+              heroTag: null,
+              tooltip: '刷新',
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xDD000000),
+              onPressed: () {
+                feedBack();
+                _homeController.onRefresh();
+              },
+              child: const Icon(Icons.refresh_rounded),
+            ),
+          );
+        }),
       ],
     );
   }
@@ -279,17 +306,17 @@ Widget msgBadge(MainController mainController) {
           tooltip: '消息',
           onPressed: () {
             mainController
-              ..msgUnReadCount.value = ''
+              ..clearUnreadMsg()
               ..lastCheckUnreadAt = DateTime.now().millisecondsSinceEpoch;
             Get.toNamed('/whisper');
           },
           icon: Badge(
             isLabelVisible:
-                mainController.msgBadgeMode != .hidden && count.isNotEmpty,
+                mainController.msgBadgeMode != .hidden && count != null,
             alignment: isNumBadge
                 ? const Alignment(0.0, -0.85)
                 : const Alignment(1.0, -0.85),
-            label: isNumBadge && count.isNotEmpty ? Text(count) : null,
+            label: isNumBadge && count != null ? Text(count) : null,
             child: const Icon(Icons.notifications_none),
           ),
         );

@@ -17,10 +17,14 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
 # update when release
-version: 2.1.1+1
+version: 2.1.4+1
 
 environment:
-  sdk: ">=3.12.0"
+  # -0 允许 Dart 3.13 预发布版（社区 ARM64 SDK 的 Dart 为 3.13.0-266.0.dev），
+  # 又比上游宽松的 >=3.12.0 更准确表达"需要 Dart 3.13"
+  sdk: ">=3.13.0-0"
+  # 本分支用范围约束：云/本地 ARM64 构建使用社区 SDK 3.48.0-0.2.pre，
+  # 不能改回上游的精确版（3.47.4），否则 ARM64 SDK 不满足约束
   flutter: ">=3.44.4"
 
 # Dependencies specify other packages that your package needs in order to work.
@@ -69,10 +73,6 @@ dependencies:
   cookie_jar: ^4.0.8
   crypto: ^3.0.6
   cupertino_ui: ^1.0.0
-  desktop_webview_window:
-    git:
-      url: https://github.com/Predidit/linux_webview_window
-      ref: main
   device_info_plus: ^13.1.0
   dio: ^5.9.1
   dio_http2_adapter: ^2.7.1
@@ -84,15 +84,21 @@ dependencies:
     git:
       url: https://github.com/bggRGjQaUbCoE/extended_nested_scroll_view.git
       ref: dev
-  file_picker: ^12.0.0
+  ffi: ^2.2.0
+  file_picker: ^13.1.0
   fixnum: ^1.1.1
   fl_chart: ^1.0.0
+  # 本分支用 fork：v5 的 sdk 元数据要求 Dart >=3.13.0 正式版，社区 ARM64 SDK
+  # 的 Dart 为 3.13.0-266.0.dev（预发布）会被拒绝；fork 仅放宽该约束，代码同 5.0.1
   flex_seed_scheme:
     git:
-      url: https://github.com/bggRGjQaUbCoE/flex_seed_scheme.git
-      ref: dev
+      url: https://github.com/Yizhou147/flex_seed_scheme.git
+      ref: v5.0.1-arm64
   flutter_displaymode: ^0.7.0
-  flutter_html: ^3.0.0-beta.2
+  flutter_html:
+    git:
+      url: https://github.com/bggRGjQaUbCoE/flutter_html.git
+      ref: dev
   flutter_inappwebview: ^6.1.5
   flutter_smart_dialog:
     git:
@@ -137,7 +143,6 @@ dependencies:
     git:
       url: https://github.com/bggRGjQaUbCoE/flutter_native_device_orientation.git
       ref: master
-  package_info_plus: ^10.1.0
   path: ^1.9.1
   path_provider: ^2.1.5
   permission_handler_android: ^14.0.0
@@ -147,6 +152,8 @@ dependencies:
   protobuf: ^6.0.0
   re_highlight: ^0.0.3
   saver_gallery: ^5.0.2
+  screen_brightness_android: ^2.1.6
+  screen_brightness_ios: ^2.1.4
   screen_brightness_platform_interface: ^2.1.0
   screen_retriever: ^0.2.0
   share_plus: ^13.1.0
@@ -187,39 +194,39 @@ dependency_overrides:
       ref: v6.1.5
   media_kit:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: media_kit
-      ref: version_1.2.5
+      ref: upstream
   media_kit_libs_android_video:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: libs/android/media_kit_libs_android_video
-      ref: version_1.2.5
+      ref: upstream
   media_kit_libs_ios_video:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: libs/ios/media_kit_libs_ios_video
-      ref: version_1.2.5
+      ref: upstream
   media_kit_libs_video:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: libs/universal/media_kit_libs_video
-      ref: version_1.2.5
+      ref: upstream
   media_kit_libs_windows_video:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: libs/windows/media_kit_libs_windows_video
-      ref: version_1.2.5
+      ref: upstream
   media_kit_native_event_loop:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: media_kit_native_event_loop
-      ref: version_1.2.5
+      ref: upstream
   media_kit_video:
     git:
-      url: https://github.com/bggRGjQaUbCoE/media-kit.git
+      url: https://github.com/My-Responsitories/media-kit.git
       path: media_kit_video
-      ref: version_1.2.5
+      ref: upstream
   cached_network_image_ce:
     git:
       url: https://github.com/My-Responsitories/flutter_cached_network_image_ce.git
@@ -233,7 +240,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
   flutter_native_splash: ^2.4.6
-  jnigen: ^0.17.0
+  jnigen: ^1.0.0
 
 flutter_launcher_icons:
   android: true

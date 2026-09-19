@@ -1,14 +1,14 @@
 name: Build
 
 on:
-    pull_request:
-        types:
-            - opened
-            - synchronize
-            - reopened
-            - ready_for_review
-        paths-ignore:
-            - "**.md"
+    # pull_request:
+    #     types:
+    #         - opened
+    #         - synchronize
+    #         - reopened
+    #         - ready_for_review
+    #     paths-ignore:
+    #         - "**.md"
     workflow_dispatch:
         inputs:
             build_android:
@@ -81,7 +81,7 @@ jobs:
               id: flutter-action
               with:
                   channel: stable
-                  flutter-version-file: pubspec.yaml
+                  flutter-version: 3.47.4
                   cache: true
 
             - name: Apply Patch
